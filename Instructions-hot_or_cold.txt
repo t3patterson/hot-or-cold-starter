@@ -1,0 +1,25 @@
+Development Instructions:
+
+1) when page loads, javaScript starts a new game.
+	1a) also must create a button to start a new  without page reload
+
+2) A secret number btw 1 - 100 should be generated
+
+3) the user must input number and click button to guess-user guess is logged
+
+4) user receives feedback in div#feedback is too high or too low
+
+5) input is cleared so that user can make next guess
+
+6) user receives feedback in whether next guess is closer or further
+	6a) later on,  maybe want to give more detailed indications
+
+	ex:(>50 ice cold), (<5 super hot) 
+
+7) game tracks # of guesses the user has made
+	7a) - span#count should default to 0 when the page loads
+
+8) game supplies users with a list of numbers they've guessed so far - this as <li> in ul#guesslist
+
+9) game notifies user of correct answer and offers to restart
+
