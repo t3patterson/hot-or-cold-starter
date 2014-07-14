@@ -18,16 +18,36 @@ $(document).ready(function(){
 
 
 // generate a random number btw 1 - 100
-  	var generateNumber = function(){
+
+var maxNumber= 100
+
+var generateNumber = function(){
   		return Math.floor((Math.random() * 100)+1)
   	}
 
+var showFeedback = function(showFeedback){
+	
+	$('.gameFeedback').slideDown(300).fadeOut(1400)
+}
+
+
 //evaluates the guess
 var evaluateGuess = function(userGuess, winNum){
-  		if(userGuess > winNum){
-  			alert('too high!');
+  		if(isNaN(userGuess) || userGuess > maxNumber){
+  			return 'please enter a number between 1-100'
+  		
+  		} else 	if(userGuess + 3 > winNum && userGuess - 3 < winNum){
+  			return 'red hot!!!';
+  			} else if (userGuess + 7 > winNum && userGuess - 7 < winNum){
+  				return 'getting hot!'
+  			} else if (userGuess + 12 > winNum && userGuess - 12 < winNum){
+  				return 'warm'
+  			} else if (userGuess + 20 > winNum && userGuess - 20 < winNum){
+  				return 'luke-warm'
+			} else if (userGuess + 25 > winNum && userGuess - 25 < winNum){
+  				return 'brrr. cold';
   			} else {
-  			alert('too low!');
+  				return 'ice cold!!'
   			}
     	};
 
@@ -45,12 +65,17 @@ var addNumToList = function(userGuess){
 
 };
 
-//resets the game when a user guesses the right number
-var winReset = function() {
-	alert('hey you won!');
+var clearText = function(){
+	$('#userGuess').val('')
+}
+
+//resets the game
+var reset = function(){
 	$('#guessList li').remove();
 	$('#count').text('0');
 	};
+
+//resets the game when a user guesses the right number
   	
 //--------------------------------------------------
  //-----------Hot-Cold Game Programming-------------
@@ -58,7 +83,7 @@ var winReset = function() {
 
 //start program by generating a random number
   	var winNum = generateNumber();
-  	alert(winNum);
+  	
 
 // click event on button- captures value from #userGuess input 
 // and determines if hot/cold
@@ -67,22 +92,34 @@ var winReset = function() {
   			
   			var userGuess = parseInt($('#userGuess').val());
   			
-  			$('#userGuess').val('')
-  			
+  			if (isNaN(userGuess) || userGuess > maxNumber){
+  				$('.gameFeedback h3').text('enter a number between 1-100');
+  				showFeedback();
+  			}
   			//if user guesses right: tell her she won and reset the game
-  			if(userGuess == winNum){
-				winReset()
-				winNum = generateNumber()
-				alert(winNum)
+  			else if (userGuess !== winNum){
+  				evaluateGuess(userGuess, winNum);
+  				guessCounter();
+  				addNumToList(userGuess);
+				$('.gameFeedback h3').text(evaluateGuess(userGuess,winNum));
+  				showFeedback();
+  				clearText();
 			//if user guesses wrong: evaluate guess(high/low), add to guessCounter
 			//and record the number to the list
   			} else {
-  				evaluateGuess(userGuess, winNum);
-  				guessCounter()
-  				addNumToList(userGuess)};
+
+				$('.gameFeedback h3').text('Hey you won!!').addClass('win');
+				showFeedback();
+				winNum = generateNumber();
+				reset();
+				clearText();
+			}	
+
   		  	});
 
-
+  	$('.new').on('click', function(){
+  		reset()
+  	});
 
 
 
@@ -91,10 +128,8 @@ var winReset = function() {
 
 //DEV Notes 
 
-//To-do
-//1- Add Hot,hotter, super hot & cold feature ranges (>5, >10, >20) to evaluateGuess() function
-//2- create on.click handler for 'new game'
-//3- show & hide a pop-up div to display feedback rather than using alert()
+//Additional Add-Ons
+//1-fix winning number display and reset()
 
 		
 	
