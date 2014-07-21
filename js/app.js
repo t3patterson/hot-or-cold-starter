@@ -23,7 +23,7 @@ var maxNumber= 100
 
 var generateNumber = function(){
   		return Math.floor((Math.random() * 100)+1)
-  	}
+}
 
 var showFeedback = function(showFeedback){
 	
@@ -62,10 +62,9 @@ var guessCounter = function() {
 var addNumToList = function(userGuess){
 	$('#guessList')
 		.prepend('<li>'+userGuess+'</li>');
-
 };
 
-var clearText = function(){
+var clearGuessVal = function(){
 	$('#userGuess').val('')
 }
 
@@ -73,7 +72,7 @@ var clearText = function(){
 var reset = function(){
 	$('#guessList li').remove();
 	$('#count').text('0');
-	};
+};
 
 //resets the game when a user guesses the right number
   	
@@ -84,7 +83,6 @@ var reset = function(){
 //start program by generating a random number
   	var winNum = generateNumber();
   	
-
 // click event on button- captures value from #userGuess input 
 // and determines if hot/cold
   	$('#guessButton').on('click', function(evt){
@@ -92,31 +90,30 @@ var reset = function(){
   			
   			var userGuess = parseInt($('#userGuess').val());
   			
+        //if user guesses NAN , or more than 100, tell him to guess btw 1-100)
   			if (isNaN(userGuess) || userGuess > maxNumber){
   				$('.gameFeedback h3').text('enter a number between 1-100');
   				showFeedback();
   			}
-  			//if user guesses right: tell her she won and reset the game
-  			else if (userGuess !== winNum){
-  				evaluateGuess(userGuess, winNum);
-  				guessCounter();
-  				addNumToList(userGuess);
-				$('.gameFeedback h3').text(evaluateGuess(userGuess,winNum));
-  				showFeedback();
-  				clearText();
-			//if user guesses wrong: evaluate guess(high/low), add to guessCounter
-			//and record the number to the list
+        //if user guesses wrong: evaluate guess(high/low), add to guessCounter
+      //and record the number to the list
+        else if (userGuess !== winNum){
+          guessCounter();
+          addNumToList(userGuess);
+        $('.gameFeedback h3').removeClass('win').text(evaluateGuess(userGuess,winNum));
+          showFeedback();
+          clearGuessVal();
+    		//if user guesses right: tell her she won and reset the game
   			} else {
-
-				$('.gameFeedback h3').text('Hey you won!!').addClass('win');
+				$('.gameFeedback h3').addClass('win').text('Hey you won!!');
 				showFeedback();
-				winNum = generateNumber();
+        winNum = generateNumber();
 				reset();
-				clearText();
-			}	
+				clearGuessVal();
+			  }	
+  });
 
-  		  	});
-
+    //make new game when user clicks button in corner
   	$('.new').on('click', function(){
   		reset()
   	});
